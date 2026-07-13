@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Confirmar conta — Total Gest</title>
+<meta name="robots" content="noindex" />
+<style>
+  body{font-family:Arial,Helvetica,sans-serif;background:#f4f6fa;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;}
+  .card{background:#fff;padding:40px;border-radius:16px;box-shadow:0 20px 50px rgba(0,0,0,.1);text-align:center;max-width:380px;}
+  .logo{display:block;margin:0 auto 20px;height:56px;}
+  h1{color:#0b3b5c;font-size:1.2rem;margin:0 0 10px;}
+  p{color:#5a6781;font-size:.9rem;margin:0 0 24px;}
+  .botao{display:inline-block;background:#f4520e;color:#fff;padding:14px 30px;border-radius:10px;text-decoration:none;font-weight:bold;}
+  .aviso{color:#b45309;font-size:.8rem;margin-top:18px;}
+</style>
+</head>
+<body>
+  <div class="card">
+    <img class="logo" src="logo-totalgest.png" alt="Total Gest" />
+    <h1>Confirme a sua conta Total Gest</h1>
+    <p>Clique no botão abaixo para ativar a sua conta de teste de 30 dias.</p>
+    <a class="botao" id="botaoConfirmar" href="#">Confirmar conta</a>
+    <p class="aviso" id="avisoSemCodigo" style="display:none;">Este link não parece válido. Verifique se copiou o endereço completo do email.</p>
+  </div>
+  <script>
+    (function () {
+      var partes = window.location.search.replace('?', '').split('&');
+      var codigo = '';
+      for (var i = 0; i < partes.length; i++) {
+        var par = partes[i].split('=');
+        if (par[0] === 'token') { codigo = decodeURIComponent(par[1] || ''); }
+      }
+      var base = 'https://rfniufasivfnrqfntzog.supabase.co/functions/v1/confirmar-trial';
+      var botao = document.getElementById('botaoConfirmar');
+      if (codigo) {
+        botao.href = base + '?token=' + encodeURIComponent(codigo);
+      } else {
+        botao.style.display = 'none';
+        document.getElementById('avisoSemCodigo').style.display = 'block';
+      }
+    })();
+  </script>
+</body>
+</html>
